@@ -1,4 +1,6 @@
 import { useState } from "react";
+import Button from "./ui/Button";
+import Input from "./ui/Input";
 
 export default function SearchBar({ onSearch }) {
   const [city, setCity] = useState("");
@@ -9,8 +11,10 @@ export default function SearchBar({ onSearch }) {
 
   return (
     <div className="search">
-      <input
-        placeholder="Enter city"
+      <label htmlFor="city-input" className="search-label">Find City Forecast</label>
+      <Input
+        id="city-input"
+        placeholder="Enter city name"
         value={city}
         onChange={(e) => setCity(e.target.value)}
         onKeyDown={(e) => {
@@ -19,7 +23,7 @@ export default function SearchBar({ onSearch }) {
           }
         }}
       />
-      <button onClick={submitSearch}>Search</button>
+      <Button onClick={submitSearch}>Get Trend</Button>
     </div>
   );
 }

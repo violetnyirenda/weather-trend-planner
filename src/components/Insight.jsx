@@ -1,3 +1,5 @@
+import Card from "./ui/Card";
+
 export default function Insight({ data }) {
   if (!data || data.length === 0) return null;
 
@@ -26,13 +28,12 @@ export default function Insight({ data }) {
   }
 
   return (
-    <div className="insight">
-      <h3>Insights</h3>
+    <Card title="Insights" className="insight">
       <ul>
         {insights.map((item) => (
           <li key={item}>{item}</li>
         ))}
       </ul>
-    </div>
+    </Card>
   );
 }

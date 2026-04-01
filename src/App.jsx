@@ -3,6 +3,8 @@ import SearchBar from "./components/SearchBar";
 import WeatherCard from "./components/WeatherCard";
 import WeatherChart from "./components/WeatherChart";
 import Insight from "./components/Insight";
+import Navbar from "./components/ui/Navbar";
+import Sidebar from "./components/ui/Sidebar";
 
 const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
 const WEEK_DAYS = [
@@ -113,8 +115,11 @@ export default function App() {
 
       setWeather({
         cityName: data.city.name,
+        country: data.city.country,
         temp: Number(data.list[0].main.temp.toFixed(1)),
         condition: data.list[0].weather[0].description,
+        humidity: data.list[0].main.humidity,
+        windSpeed: Number(data.list[0].wind.speed.toFixed(1)),
       });
       setChartData(processForecast(data));
     } catch (err) {
@@ -127,23 +132,32 @@ export default function App() {
   };
 
   return (
-    <main className="app">
-      <section className="hero">
-        <p className="eyebrow">Forecast Intelligence</p>
-        <h1>Weather Trend Planner</h1>
-        <p className="subtitle">Plan outdoor activities with clearer 5-7 day trend insights.</p>
-      </section>
+    <main className="app-shell">
+      <Navbar />
 
-      <SearchBar onSearch={fetchWeather} />
+      <div className="app-layout">
+        <Sidebar />
 
-      {loading && <p className="status">Loading forecast...</p>}
-      {error && <p className="error">{error}</p>}
+        <section className="content-area">
+          <section className="search-panel">
+            <SearchBar onSearch={fetchWeather} />
+          </section>
 
-      <WeatherCard weather={weather} />
+          {loading && <p className="status">Loading forecast...</p>}
+          {error && <p className="error">{error}</p>}
 
-      <WeatherChart data={chartData} />
+          <section className="summary-grid">
+            <WeatherCard weather={weather} />
+            <Insight data={chartData} />
+          </section>
 
-      <Insight data={chartData} />
+          <section className="chart-section">
+            <WeatherChart data={chartData} />
+          </section>
+
+          <p className="footnote">Data source: OpenWeather API • 5-day / 3-hour forecast</p>
+        </section>
+      </div>
     </main>
   );
 }
